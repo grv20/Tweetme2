@@ -1,8 +1,68 @@
 {% extends 'base.html' %}
 
 {% block head_title %}
-this is amazing!!{% endblock head_title %}
+this is amazing!!
+{% endblock head_title %}
 
 {% block content %}
 Welcome to Tweetme 2
+
+<div id='tweets'>
+    Loading...
+</div>
+<script>
+    const tweetsElement = document.getElementById("tweets") //get an html element
+    
+    // tweetsElement.innerHTML = 'Loading...' // set new html in that element
+    // var el1 = "<h1>Hi there 1</h1>"
+    // var el2 = "<h1>Hi there 2</h1>"
+    // var el3 = "<h1>Hi there 3</h1>"
+    // tweetsElement.innerHTML = el1 + el2 + el3
+
+    const xhr = new XMLHttpRequest() //retrieval of data  from xhr for
+    //purpose of continually modifying loaded web page underlying concept
+    //of AJAX Design.
+    const method = 'GET'
+    const url = "/tweets"
+    const responseType = "json"
+
+    function handleDidLike(tweet_id, currentCount){
+        console.log(tweet_id, currentCount)
+    }
+
+    function LikeBtn(tweet) {
+        return "<button class='btn btn-primary btn-sm' onclick=handleDidLike(" 
+            + tweet.id + "," + tweet.likes + ")>" +
+            tweet.likes + " Like</button>"
+    }
+
+    function formatTweetElement(tweet){
+        var formattedTweet = "<div class='mb-4 tweet' id='tweet-"+ 
+        tweet.id + "'><h1>" + 
+            tweet.id + "</h1>" + 
+            "<p>" +  tweet.content +
+            "</p><div class='btn-group'>" + LikeBtn(tweet) +
+             "</div></div>"
+        return formattedTweet
+    }
+    xhr.responseType = responseType
+    xhr.open(method,url) //open up this method with this url
+    xhr.onload = function(){
+        //console.log(xhr.response) //log the response thats coming back
+        const serverResponse = xhr.response //it saves response provided by request(the json response it got)
+        const listedItems = serverResponse.response // it saves "response" field declared in the json file
+        var finalTweetStr = ""
+        var i;
+        for(i=0; i<listedItems.length; i++){
+            var tweetObj = listedItems[i]
+            var currentItem = formatTweetElement(tweetObj)
+            finalTweetStr  += currentItem
+        }
+        tweetsElement.innerHTML = finalTweetStr
+        //console.log(listedItems)
+    } 
+    
+    xhr.send() //trigger the request after i send it up
+</script>
+
 {% endblock content %}
