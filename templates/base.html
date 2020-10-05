@@ -7,16 +7,18 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
     <style>
       .bg-tweetme {
         background-color: #334b82!important;
       }
+    
     </style>
     <title>Tweetme 2{% block head_title %}{% endblock head_title %}</title>
   </head>
   <body>
     {% include "components/navbar.html" %}
-    <div class='container'>
+    <div class='container bg-light'>
       {% block content %}
 
     {% endblock content %}
