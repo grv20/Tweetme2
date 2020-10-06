@@ -28,6 +28,7 @@
 <div class="row" id='tweets'>
     Loading...
 </div>
+
 <script>
     function handleTweetCreateFormDidSubmit(event){
         event.preventDefault()
@@ -41,10 +42,12 @@
         document.querySelector('.text').value = ""
         const xhr = new XMLHttpRequest()
         xhr.open(method,url)
+        xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest") //In order to make django return "true" when queried request.is_ajax()
+        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
         xhr.onload = function(){
             //console.log(xhr.response) //log the response thats coming back
         const serverResponse = xhr.response 
-        console.log(serverResponse)
+        console.log(xhr.status, serverResponse)
         const tweetCreateFormEl = document.getElementById("tweet-create-form")
         loadTweets(tweetsEl)
         }
@@ -72,6 +75,7 @@
         const listedItems = serverResponse.response // it saves "response" field declared in the json file
         var finalTweetStr = ""
         var i;
+        
         for(i=listedItems.length-1; i>=0; i--){
             var tweetObj = listedItems[i]
             var currentItem = formatTweetElement(tweetObj)
@@ -79,7 +83,7 @@
         }
         tweetsElement.innerHTML = finalTweetStr
         //console.log(listedItems)
-    } 
+    }
     
     xhr.send() //trigger the request after i send it up
 
