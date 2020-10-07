@@ -39,7 +39,12 @@
             //d show error
             myErrorDiv.setAttribute("class", "d-block alert alert-danger")
             myErrorDiv.innerText = msg
-        } else{
+        } else if(msg === "Success"  && display === false){
+            myErrorDiv.setAttribute("class", "d-block alert alert-success")
+            myErrorDiv.innerText = msg
+            setTimeout(() =>  myErrorDiv.setAttribute("class", "d-none alert alert-danger"), 3000);
+        }
+        else{
             // hide error
             myErrorDiv.setAttribute("class", "d-none alert alert-danger")
         }
@@ -62,7 +67,7 @@
         xhr.onload = function(){
         //console.log(xhr.response) log the response thats coming back
         if(xhr.status === 201) {
-            handleTweetFormError("", false)
+            handleTweetFormError("Success", false)
             const newTweetJson = xhr.response //response will give tweet element in json
             //const newTweetJson = JSON.parse(newTweet)
             //console.log(newTweetJson.likes)
@@ -86,6 +91,10 @@
                 alert("An Error occured")
             }
             }
+        else if (xhr.status === 401){
+        alert('You must login!'); // when server is source of error
+        window.location.href = "/login"
+        }
         else if (xhr.status === 500){
             alert('Server Error!'); // when server is source of error
         }
@@ -157,3 +166,4 @@
 </script>
 
 {% endblock content %}
+
