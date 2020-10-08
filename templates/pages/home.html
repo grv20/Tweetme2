@@ -123,7 +123,8 @@
         xhr.onload = function(){
             //console.log(xhr.response) //log the response thats coming back
         const serverResponse = xhr.response //it saves response provided by request(the json response it got)
-        const listedItems = serverResponse.response // it saves "response" field declared in the json file
+        //const listedItems = serverResponse.response // it saves "response" field declared in the json file
+        const listedItems = serverResponse
         var finalTweetStr = ""
         var i;
         
