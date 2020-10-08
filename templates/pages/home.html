@@ -92,8 +92,12 @@
             }
             }
         else if (xhr.status === 401){
-        alert('You must login!'); // when server is source of error
-        window.location.href = "/login"
+            alert('You must login!'); // when server is source of error
+            window.location.href = "/login"
+        }
+        else if (xhr.status === 403){
+            alert('You must login!'); // when server is source of error
+            window.location.href = "/login"
         }
         else if (xhr.status === 500){
             alert('Server Error!'); // when server is source of error
