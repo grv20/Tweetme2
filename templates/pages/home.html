@@ -126,6 +126,19 @@
         xhr.send(myFormData)
     }
 
+
+    function formatTweetElement(tweet){
+        var date = new Date(tweet.timestamp)
+        var formattedTweet = "<div class='col-12 col-md-10 mx-auto border rounded py-3 colmb-4 tweet' id='tweet-"+ 
+        tweet.id + "'>" + 
+            "<p><strong class='text-info'>" + tweet.id + "</strong> " + tweet.content +
+            "</p><p class='text-muted'>" + date +
+            "</p><div class='btn-group'>" + LikeBtn(tweet) +
+             UnLikeBtn(tweet) +  RetweetBtn(tweet) +
+             "</div></div>"
+        return formattedTweet
+    }
+
     const tweetCreateFormEl = document.getElementById("tweet-create-form")
 
     tweetCreateFormEl.addEventListener("submit", handleTweetCreateFormDidSubmit )
@@ -203,17 +216,6 @@
             tweet.likes + " Likes</button>"
     }
 
-    function formatTweetElement(tweet){
-        var date = new Date(tweet.timestamp)
-        var formattedTweet = "<div class='col-12 col-md-10 mx-auto border rounded py-3 colmb-4 tweet' id='tweet-"+ 
-        tweet.id + "'>" + 
-            "<p><strong class='text-info'>" + tweet.id + "</strong> " + tweet.content +
-            "</p><p class='text-muted'>" + date +
-            "</p><div class='btn-group'>" + LikeBtn(tweet) +
-             UnLikeBtn(tweet) +  RetweetBtn(tweet) +
-             "</div></div>"
-        return formattedTweet
-    }
     
 </script>
 
