@@ -19,14 +19,17 @@ class TweetActionSerializer(serializers.Serializer):
 class TweetCreateSerializer(serializers.ModelSerializer):
     #using this for tweet create view
     likes = serializers.SerializerMethodField(read_only=True)
+    #This is a read-only field. It gets its value by calling a method on the serializer class it is attached to.
+    #It can be used to add any sort of data to the serialized representation of your object
     #since i am defining this here, i must define function like get_likes
     class Meta:
         model = Tweet
         fields = ['id','content','likes','timestamp']
         
     def get_likes(self,obj):
-        #the whole object is passed to it, and we are extracting likes from it
-        #we want to initialize it this way, we dont want to fill null
+       #The serializer method referred to by the method_name argument should accept a single argument
+       #(in addition to self), which is the object being serialized.
+       # It should return whatever you want to be included in the serialized representation of the object. 
         return obj.likes.count()
 
     def validate_content(self,value):
@@ -40,13 +43,13 @@ class TweetCreateSerializer(serializers.ModelSerializer):
 class TweetSerializer(serializers.ModelSerializer):
     likes = serializers.SerializerMethodField(read_only=True)
     og_tweet = TweetCreateSerializer(source='parent',read_only=True)
-    
+    #OR parent = TweetCreateSerializer(read_only=true)
     class Meta:
         model = Tweet
         fields = ['id','content','likes','timestamp', 'is_retweet', 'og_tweet']
 
     def get_likes(self,obj):
-        #we want number of likes, not who liked it
+        #we want number of likes, not who liked it, thats why we are sending custom response
         return obj.likes.count()
     
     

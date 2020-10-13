@@ -15,6 +15,8 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 
 ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 # Create your views here.
+
+
 def home_view(request, *args, **kwargs):
     return render(request,"pages/home.html", context={}, status=200)
 
@@ -23,7 +25,6 @@ def home_view(request, *args, **kwargs):
 # @authentication_classes([SessionAuthentication, MyCustomAuth])
 @permission_classes([IsAuthenticated])
 def tweet_create_view(request, *args, **kwargs):
-    print(request)
     serializer = TweetCreateSerializer(data = request.POST)
     if serializer.is_valid(raise_exception=True): #so that it will send back what the error is on its own
         serializer.save(user=request.user)
@@ -54,6 +55,8 @@ def tweet_delete_view(request, tweet_id, *args, **kwargs):
     qs = qs.filter(user=request.user)
     if not qs.exists():
         return Response({"message":"You cannot delete this tweet"}, status=401)
+    #qs gives <queryset> object
+    #qs.first() gives element inside <queryset>
     obj = qs.first()
     obj.delete()
     return Response({"message":"Tweet Removed"}, status=200)
@@ -81,11 +84,13 @@ def tweet_action_view(request, *args, **kwargs):
         return Response(serializer.data, status=200)
     elif action == "unlike":
         obj.likes.remove(request.user)
+        serializer = TweetSerializer(obj)
+        return Response(serializer.data, status=200)
     elif action == "retweet":
         new_tweet =  Tweet.objects.create(user=request.user, 
             parent=obj, content=content)
         serializer = TweetSerializer(new_tweet)
-        return Response(serializer.data, status=200)
+        return Response(serializer.data, status=201)
     return Response({}, status=200)
 
 
