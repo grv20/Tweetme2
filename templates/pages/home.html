@@ -20,7 +20,6 @@
             <input type='hidden' value='/' name='next' /> <!-- want it to be redirected to home page-->
             <textarea required="required" class='form-control text' rows='5' name='content' placeholder='Your tweet...'></textarea>
             <button type='submit' class="btn btn-info float-right">Tweet</button>
-            <div class="msg text-success bg-light"></div>
         </form>
     </div> 
 </div>
@@ -34,6 +33,7 @@
     //const msg = document.querySelector('.msg');
 
     function getCookie(name) {
+    //for using csrf_token in actions(like,unlike,retweet)
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
         const cookies = document.cookie.split(';');
@@ -70,20 +70,21 @@
     function handleTweetCreateFormDidSubmit(event){
         event.preventDefault()
         const myForm = event.target
-        const myFormData = new FormData(myForm)
+        const myFormData = new FormData(myForm)  //inherit FormData class predefined in JS
         const url = myForm.getAttribute("action")
         const method = myForm.getAttribute("method")
-        //msg.innerText = 'Succesfully Tweeted!';
-        //setTimeout(() => msg.remove(), 3000);
         const xhr = new XMLHttpRequest()
         const responseType = "json"
         xhr.responseType = responseType
         xhr.open(method,url)
-        xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest") //In order to make django return "true" when queried request.is_ajax()
+        xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest") 
+        //In order to make django return "true" when queried request.is_ajax()
         xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
         xhr.onload = function(){
         //console.log(xhr.response) log the response thats coming back
         if(xhr.status === 201) {
+            //The read-only XMLHttpRequest.status property returns the numerical HTTP status code of the XMLHttpRequest's response.
+            //Before the request completes, the value of status is 0. Browsers also report a status of 0 in case of XMLHttpRequest errors.
             handleTweetFormError("Success", false)
             const newTweetJson = xhr.response //response will give tweet element in json
             //const newTweetJson = JSON.parse(newTweet)

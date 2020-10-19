@@ -1,17 +1,19 @@
 import random
-from django.shortcuts import render, redirect, HttpResponseRedirect
-from django.http import HttpResponse, Http404, JsonResponse
-from django.utils.http import  is_safe_url
 from django.conf import settings
+from django.http import HttpResponse, Http404, JsonResponse
+from django.shortcuts import render, redirect, HttpResponseRedirect
+from django.utils.http import  is_safe_url
+
 
 from .forms import TweetForm
 from .models import Tweet
 from .serializers import TweetSerializer, TweetCreateSerializer, TweetActionSerializer
 
 from rest_framework.authentication import SessionAuthentication
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
+
 
 ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 # Create your views here.
