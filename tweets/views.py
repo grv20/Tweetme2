@@ -35,6 +35,7 @@ def tweet_create_view(request, *args, **kwargs):
 
 @api_view(['GET'])
 def tweet_list_view(request, *args, **kwargs):
+    print(request.META.get("REMOTE_ADDR"))
     qs = Tweet.objects.all()
     serializer = TweetSerializer(qs, many=True)
     return Response(serializer.data, status=200)
