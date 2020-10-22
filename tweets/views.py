@@ -24,7 +24,7 @@ def home_view(request, *args, **kwargs):
 
 
 @api_view(['POST']) # http method client has to send == POST
-# @authentication_classes([SessionAuthentication, MyCustomAuth])
+#@authentication_classes([SessionAuthentication])
 @permission_classes([IsAuthenticated])
 def tweet_create_view(request, *args, **kwargs):
     serializer = TweetCreateSerializer(data = request.POST)
