@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {loadTweets} from '../lookup'
+import {loadTweets, createTweet} from '../lookup';
 
 export function TweetsComponent(props){
   const textAreaRef = React.createRef()
@@ -13,11 +13,14 @@ export function TweetsComponent(props){
     // The rest parameter operator is used in function parameter lists 
     //with the format: ...variable and it will include within that variable 
     //the entire list of uncaptured arguments that the function was called with
-    console.log(newTweets.length)
-    tempNewTweets.unshift({
-      content: newVal,
-      likes: 0,
-      id:12313
+    //console.log(newTweets.length)
+    createTweet(newVal, (response, status) =>{
+      if (status === 201){
+        tempNewTweets.unshift(response)
+      }else{
+        console.log(response)
+        alert("An error occured please try again")
+      }
     })
     setNewTweets(tempNewTweets)
     textAreaRef.current.value = ''
@@ -42,6 +45,7 @@ export function TweetsList(props){
     const [tweetsInit, setTweetsInit] = useState([])
     const [tweets, setTweets] = useState([])
     const [tweetsDidSet, setTweetsDidSet] = useState(false)
+
     useEffect(() =>{
       //you tell React that your component needs to do something after render.
       // React will remember the function you passed
