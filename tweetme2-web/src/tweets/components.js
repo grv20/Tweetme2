@@ -41,7 +41,7 @@ export function TweetsComponent(props){
 export function TweetsList(props){
     const [tweetsInit, setTweetsInit] = useState([])
     const [tweets, setTweets] = useState([])
-    
+    const [tweetsDidSet, setTweetsDidSet] = useState(false)
     useEffect(() =>{
       //you tell React that your component needs to do something after render.
       // React will remember the function you passed
@@ -59,11 +59,13 @@ export function TweetsList(props){
 
     useEffect(() =>
     {
-      //myCallback is a function which takes response and status as parameter
+      if (tweetsDidSet === false){
+        //myCallback is a function which takes response and status as parameter
       const myCallback = (response, status) => {
         //console.log(response,status)
         if(status === 200){
           setTweetsInit(response)
+          setTweetsDidSet(true)
   
         }
         else{
@@ -76,8 +78,11 @@ export function TweetsList(props){
       //It will be async callback since first request to load tweets willbe made
       //and depending on response myCallback will be called 
       loadTweets(myCallback);
+
+      }
+      
       //The Map object holds key-value pairs and remembers the original insertion order of the keys.
-    }, []) //[] it is dependency array, to denote what this useeffect is dependent on.
+    }, [tweetsInit, tweetsDidSet, setTweetsDidSet]) //[] it is dependency array, to denote what this useeffect is dependent on.
     //index in map function denotes position of item within array
     return tweets.map((item,index)=>{
       return <Tweet tweet={item} className='my-5 py-5 border bg-white text-dark' key={`${index}-item.id`} />
