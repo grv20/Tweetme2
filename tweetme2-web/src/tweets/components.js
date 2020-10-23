@@ -2,27 +2,33 @@ import React, {useEffect, useState} from 'react';
 import {loadTweets, createTweet} from '../lookup';
 
 export function TweetsComponent(props){
+  //it is main custom tag which is getting rendered into django
   const textAreaRef = React.createRef()
   const [newTweets, setNewTweets] = useState([])
-  
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    const newVal = textAreaRef.current.value
-    
+
+  const handleBackendUpdate = (response, status) =>{
+    //backend api response handler
+    //it will be called when new tweet submitted
     let tempNewTweets = [...newTweets] //taking any number of args
     // The rest parameter operator is used in function parameter lists 
     //with the format: ...variable and it will include within that variable 
     //the entire list of uncaptured arguments that the function was called with
-    //console.log(newTweets.length)
-    createTweet(newVal, (response, status) =>{
-      if (status === 201){
-        tempNewTweets.unshift(response)
-      }else{
-        console.log(response)
-        alert("An error occured please try again")
-      }
-    })
-    setNewTweets(tempNewTweets)
+    //console.log(newTweets.length)//counts tweet posted without refreshing
+    if (status === 201){
+      tempNewTweets.unshift(response)
+      setNewTweets(tempNewTweets)
+    }else{
+      console.log(response)
+      alert("An error occured please try again")
+    }
+  }
+  
+  const handleSubmit = (event) => {
+    //handles submit(on tweeting)
+    event.preventDefault()
+    const newVal = textAreaRef.current.value
+    //backend api request
+    createTweet(newVal, handleBackendUpdate)//second arg is callback when tweet created
     textAreaRef.current.value = ''
   }
 
@@ -42,9 +48,13 @@ export function TweetsComponent(props){
 
 
 export function TweetsList(props){
-    const [tweetsInit, setTweetsInit] = useState([])
-    const [tweets, setTweets] = useState([])
-    const [tweetsDidSet, setTweetsDidSet] = useState(false)
+  //it will be called at start to load tweets
+  //and then every time a new tweet is submitted
+    //console.log(props)
+    const [tweetsInit, setTweetsInit] = useState([])//to make account of tweets when page refreshed
+    const [tweets, setTweets] = useState([])//the final set of tweets to display 
+    const [tweetsDidSet, setTweetsDidSet] = useState(false)//to check if this fun is called initially
+    // or when new tweet submitted
 
     useEffect(() =>{
       //you tell React that your component needs to do something after render.
@@ -69,7 +79,8 @@ export function TweetsList(props){
         //console.log(response,status)
         if(status === 200){
           setTweetsInit(response)
-          setTweetsDidSet(true)
+          setTweetsDidSet(true)//to know this was called when loading the page
+          //on setting true when new tweets added, this callback wont run!
   
         }
         else{
@@ -84,7 +95,6 @@ export function TweetsList(props){
       loadTweets(myCallback);
 
       }
-      
       //The Map object holds key-value pairs and remembers the original insertion order of the keys.
     }, [tweetsInit, tweetsDidSet, setTweetsDidSet]) //[] it is dependency array, to denote what this useeffect is dependent on.
     //index in map function denotes position of item within array

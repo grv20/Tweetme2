@@ -1,6 +1,5 @@
 import React from 'react';
 import logo from './logo.svg';
-import logo2 from './image.webp'
 import './App.css';
 import {TweetsComponent} from './tweets'
 
