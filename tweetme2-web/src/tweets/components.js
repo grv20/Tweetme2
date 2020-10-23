@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {loadTweets, createTweet} from '../lookup';
+import {apiTweetList, apiTweetCreate} from './lookup';
 
 export function TweetsComponent(props){
   //it is main custom tag which is getting rendered into django
@@ -28,7 +28,7 @@ export function TweetsComponent(props){
     event.preventDefault()
     const newVal = textAreaRef.current.value
     //backend api request
-    createTweet(newVal, handleBackendUpdate)//second arg is callback when tweet created
+    apiTweetCreate(newVal, handleBackendUpdate)//second arg is callback when tweet created
     textAreaRef.current.value = ''
   }
 
@@ -75,7 +75,7 @@ export function TweetsList(props){
     {
       if (tweetsDidSet === false){
         //myCallback is a function which takes response and status as parameter
-      const myCallback = (response, status) => {
+      const handleTweetListLookup = (response, status) => {
         //console.log(response,status)
         if(status === 200){
           setTweetsInit(response)
@@ -92,7 +92,7 @@ export function TweetsList(props){
       //we are passing a function as an argument to another function
       //It will be async callback since first request to load tweets willbe made
       //and depending on response myCallback will be called 
-      loadTweets(myCallback);
+      apiTweetList(handleTweetListLookup);
 
       }
       //The Map object holds key-value pairs and remembers the original insertion order of the keys.
