@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {apiTweetList, apiTweetCreate} from './lookup';
+import {apiTweetList, apiTweetCreate, apiTweetAction} from './lookup';
 
 export function TweetsComponent(props){
   //it is main custom tag which is getting rendered into django
@@ -132,20 +132,23 @@ export function ActionBtn(props) {
     //It accepts a new state value and enqueues a re-render of the component.
     //Normally, variables “disappear” when the function exits but state variables are preserved by React.
     //likes is variable(initialized with tweet.likes or 0) and setLikes is function
-    const [userLike, setUserLike] = useState(tweet.userLike === true ? true : false)
+    //const [userLike, setUserLike] = useState(tweet.userLike === true ? true : false)
     const className = props.className ? props.className : 'btn btn-primary btn-sm'
     const actionDisplay = action.display ? action.display : 'Action'
     
+    const handleActionBackendEvent = (response, status) => {
+      console.log(status, response)
+      if (status === 200){
+        setLikes(response.likes)
+        //setUserLike(true)
+      }
+  
+
+    }
     const handleClick = (event) => {
       event.preventDefault()
-      if (action.type === 'like'){
-        if(userLike === true) {
-          setLikes(likes - 1)
-          setUserLike(false)
-        }else{
-        setLikes(likes+1)
-        setUserLike(true)
-      }}
+      apiTweetAction(tweet.id, action.type, handleActionBackendEvent)
+      
     }
     const display = action.type === 'like' ? `${likes} ${actionDisplay}` : `${actionDisplay}` 
     return <button className={className} onClick={handleClick}> {display} </button>
