@@ -16,7 +16,10 @@ export function TweetsComponent(props){
     //console.log(newTweets.length)//counts tweet posted without refreshing
     if (status === 201){
       tempNewTweets.unshift(response)
-      setNewTweets(tempNewTweets)
+      setNewTweets(tempNewTweets) //when set is used it will discard previous state
+      // and update this state.. If there were 2 tweets in newTweets and now set is called
+      // with 3rd update, then newTweets will contain 3, discarding previous state
+      //console.log(newTweets)
     }else{
       console.log(response)
       alert("An error occured please try again")
@@ -74,7 +77,6 @@ export function TweetsList(props){
     useEffect(() =>
     {
       if (tweetsDidSet === false){
-        //myCallback is a function which takes response and status as parameter
       const handleTweetListLookup = (response, status) => {
         //console.log(response,status)
         if(status === 200){
@@ -107,21 +109,36 @@ export function TweetsList(props){
   
   }
 
+export function ParentTweet(props){
+  const {tweet} = props
+  return tweet.parent ? <div className='row'>
+            <div className='col-11 mx-auto p-3 border rounded'>
+              <p className='mb-0 text-muted small'>Retweet</p>
+              <Tweet className={' '} tweet={tweet.parent} />
+            </div>
+          </div> : null
+
+}
+
 export function Tweet(props){
   //props are argument passed to react components
   //props are an object, do console.log to find it out
   //console.log(props)
   const {tweet} = props
+  console.log(tweet)
   const className = props.className ? props.className : 'col-10mx-auto cold-md-6'
 
-  return <div className={className}>
-          <p>{tweet.id} - {tweet.content}</p>
-          <div className='btn btn-group'>
-            <ActionBtn  tweet={tweet} action={{type:"like", display:"Likes"}} />
-            <ActionBtn  tweet={tweet} action={{type:"unlike", display:"UnLike"}} />
-            <ActionBtn  tweet={tweet} action={{type:"retweet", display:"Retweet"}} />
+  return  <div className={className}>
+            <div>
+              <p>{tweet.id} - {tweet.content}</p>
+              <ParentTweet tweet={tweet} />
+              </div>
+            <div className='btn btn-group'>
+              <ActionBtn  tweet={tweet} action={{type:"like", display:"Likes"}} />
+              <ActionBtn  tweet={tweet} action={{type:"unlike", display:"UnLike"}} />
+              <ActionBtn  tweet={tweet} action={{type:"retweet", display:"Retweet"}} />
+            </div>
           </div>
-        </div>
 }
 
 export function ActionBtn(props) {

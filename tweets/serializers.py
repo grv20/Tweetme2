@@ -42,11 +42,11 @@ class TweetCreateSerializer(serializers.ModelSerializer):
 
 class TweetSerializer(serializers.ModelSerializer):
     likes = serializers.SerializerMethodField(read_only=True)
-    og_tweet = TweetCreateSerializer(source='parent',read_only=True)
-    #OR parent = TweetCreateSerializer(read_only=true)
+    #og_tweet = TweetCreateSerializer(source='parent',read_only=True)
+    parent = TweetCreateSerializer(read_only=True)
     class Meta:
         model = Tweet
-        fields = ['id','content','likes','timestamp', 'is_retweet', 'og_tweet']
+        fields = ['id','content','likes','timestamp', 'is_retweet', 'parent']
 
     def get_likes(self,obj):
         #we want number of likes, not who liked it, thats why we are sending custom response
