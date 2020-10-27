@@ -125,25 +125,40 @@ export function Tweet(props){
   //props are an object, do console.log to find it out
   //console.log(props)
   const {tweet} = props
-  console.log(tweet)
+  const [actionTweet, setActionTweet] = useState(props.tweet ? props.tweet : null)
+  //console.log(actionTweet)
+  //console.log(tweet)
   const className = props.className ? props.className : 'col-10mx-auto cold-md-6'
+
+  const handlePerformAction = (newActionTweet, status) => {
+    //to perform some action when orignal tweet came to know its been retweeted, liked or unliked.
+    if (status === 200){
+      console.log(newActionTweet)
+      setActionTweet(newActionTweet)
+    } else if (status === 201){
+      //let the tweet list know
+    }
+    
+  }
 
   return  <div className={className}>
             <div>
               <p>{tweet.id} - {tweet.content}</p>
               <ParentTweet tweet={tweet} />
               </div>
-            <div className='btn btn-group'>
-              <ActionBtn  tweet={tweet} action={{type:"like", display:"Likes"}} />
-              <ActionBtn  tweet={tweet} action={{type:"unlike", display:"UnLike"}} />
-              <ActionBtn  tweet={tweet} action={{type:"retweet", display:"Retweet"}} />
+            {actionTweet && <div className='btn btn-group'>
+              <ActionBtn  tweet={actionTweet} didPerformAction={handlePerformAction} action={{type:"like", display:"Likes"}} />
+              <ActionBtn  tweet={actionTweet} didPerformAction={handlePerformAction} action={{type:"unlike", display:"UnLike"}} />
+              <ActionBtn  tweet={actionTweet} didPerformAction={handlePerformAction} action={{type:"retweet", display:"Retweet"}} />
             </div>
+            }
           </div>
 }
 
 export function ActionBtn(props) {
-    const {tweet,action} = props
-    const [likes, setLikes] = useState(tweet.likes ? tweet.likes : 0)
+    const {tweet,action, didPerformAction} = props
+    const likes = tweet.likes ? tweet.likes : 0
+    //const [likes, setLikes] = useState(tweet.likes ? tweet.likes : 0)
     //argument passed to useState sets initial state of first parameter i.e. likes
     //The setState function is used to update the state. 
     //It accepts a new state value and enqueues a re-render of the component.
@@ -155,9 +170,11 @@ export function ActionBtn(props) {
     
     const handleActionBackendEvent = (response, status) => {
       console.log(status, response)
-      if (status === 200){
-        setLikes(response.likes)
-        //setUserLike(true)
+      if ((status === 200 || status === 201) && didPerformAction){
+        //when some action is performed on tweet, handlePerform action is calld from here.
+        //basically its way of letting parent tweet know, some action is performed on them.
+        didPerformAction(response, status)
+        
       }
   
 
