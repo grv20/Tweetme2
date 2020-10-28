@@ -3,7 +3,6 @@ import {apiTweetList, apiTweetCreate, apiTweetAction} from './lookup';
 
 export function TweetsComponent(props){
   //it is main custom tag which is getting rendered into django
-  console.log(props)
   const textAreaRef = React.createRef()
   const [newTweets, setNewTweets] = useState([])
 

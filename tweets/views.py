@@ -37,6 +37,11 @@ def tweet_create_view(request, *args, **kwargs):
 def tweet_list_view(request, *args, **kwargs):
     print(request.META.get("REMOTE_ADDR"))
     qs = Tweet.objects.all()
+    username = request.GET.get('username') # ?username=woltab
+    #print(request.user.id)
+    if username != None:
+        qs = qs.filter(user__username__iexact=username)
+        #qs = qs.filter(user=request.user.id)
     serializer = TweetSerializer(qs, many=True)
     return Response(serializer.data, status=200)
 
