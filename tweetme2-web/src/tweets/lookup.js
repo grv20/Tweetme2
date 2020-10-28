@@ -12,7 +12,16 @@ export function apiTweetAction(tweetId, action, callback){
   backendLookup("POST", "/tweets/action/", callback, data)
 }
 
-export function apiTweetList(callback){
+export function apiTweetList(username, callback){
   //handles tweet-load request from front end and format it to send it to backend
-  backendLookup("GET","/tweets/", callback)
+  let endpoint = "/tweets/"
+  if (username){
+    endpoint = `/tweets/?username=${username}`
   }
+  backendLookup("GET",endpoint, callback)
+  }
+
+
+export  function apiTweetDetail(tweetId, callback){
+  backendLookup("GET",`tweets/${tweetId}/`, callback)
+}

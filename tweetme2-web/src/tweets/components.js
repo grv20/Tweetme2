@@ -6,6 +6,7 @@ export function TweetsComponent(props){
   const textAreaRef = React.createRef()
   const [newTweets, setNewTweets] = useState([])
 
+  const canTweet = props.canTweet === "false" ? false : true
   const handleBackendUpdate = (response, status) =>{
     //backend api response handler
     //it will be called when new tweet submitted
@@ -36,6 +37,7 @@ export function TweetsComponent(props){
   }
 
   return <div className={props.className}>
+          {canTweet === true && 
           <div className='col-12 mb-3'>
             <form onSubmit={handleSubmit}>
               <textarea ref={textAreaRef}required={true} className='form-control' name='tweet'>
@@ -43,8 +45,8 @@ export function TweetsComponent(props){
               </textarea>
               <button type='submit' className='btn btn-primary my-3'>Tweet</button>
             </form>
-          </div>
-          <TweetsList newTweets={newTweets} />
+          </div>}
+          <TweetsList newTweets={newTweets} {...props} />
     </div>
 }
 
@@ -95,11 +97,11 @@ export function TweetsList(props){
       //we are passing a function as an argument to another function
       //It will be async callback since first request to load tweets willbe made
       //and depending on response myCallback will be called 
-      apiTweetList(handleTweetListLookup);
+      apiTweetList(props.username,handleTweetListLookup);
 
       }
       //The Map object holds key-value pairs and remembers the original insertion order of the keys.
-    }, [tweetsInit, tweetsDidSet, setTweetsDidSet]) //[] it is dependency array, to denote what this useeffect is dependent on.
+    }, [tweetsInit, tweetsDidSet, setTweetsDidSet, props.username]) //[] it is dependency array, to denote what this useeffect is dependent on.
     //index in map function denotes position of item within array
 
     const handleDidRetweet = (newTweet) => {
