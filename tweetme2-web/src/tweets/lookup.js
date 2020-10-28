@@ -8,6 +8,7 @@ export function apiTweetCreate(newTweet, callback){
 export function apiTweetAction(tweetId, action, callback){
   //handles tweet-create request from front end and format it to send it to backend
   const data = {id: tweetId, action: action}
+  console.log(tweetId)
   backendLookup("POST", "/tweets/action/", callback, data)
 }
 

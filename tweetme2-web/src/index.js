@@ -18,7 +18,8 @@ if (appEl){
 
 const tweetsEl = document.getElementById("tweetme-2")
 if (tweetsEl){
-  ReactDOM.render(<TweetsComponent />, tweetsEl);
+  console.log(tweetsEl.dataset)
+  ReactDOM.render(<TweetsComponent username={tweetsEl.dataset.username} />, tweetsEl);
 }
 
 // If you want your app to work offline and load faster, you can change

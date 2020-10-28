@@ -3,6 +3,7 @@ import {apiTweetList, apiTweetCreate, apiTweetAction} from './lookup';
 
 export function TweetsComponent(props){
   //it is main custom tag which is getting rendered into django
+  console.log(props)
   const textAreaRef = React.createRef()
   const [newTweets, setNewTweets] = useState([])
 
@@ -31,7 +32,7 @@ export function TweetsComponent(props){
     event.preventDefault()
     const newVal = textAreaRef.current.value
     //backend api request
-    apiTweetCreate(newVal, handleBackendUpdate)//second arg is callback when tweet created
+    apiTweetCreate(newVal, handleBackendUpdate)//second arg is 'callback' when tweet created
     textAreaRef.current.value = ''
   }
 
@@ -76,6 +77,7 @@ export function TweetsList(props){
 
     useEffect(() =>
     {
+      //for getting tweet list initially when page is loaded.
       if (tweetsDidSet === false){
       const handleTweetListLookup = (response, status) => {
         //console.log(response,status)
@@ -102,12 +104,14 @@ export function TweetsList(props){
     //index in map function denotes position of item within array
 
     const handleDidRetweet = (newTweet) => {
+      //update tweetlist when retweet action is performed 
       const updateTweetsInit  = [...tweetsInit]
       updateTweetsInit.unshift(newTweet)
       setTweetsInit(updateTweetsInit)
       const updateFinalTweets  = [...tweets]
       updateFinalTweets.unshift(tweets)
       setTweets(updateFinalTweets)
+      //console.log(tweets)
 
     }
 
