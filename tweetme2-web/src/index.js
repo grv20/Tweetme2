@@ -31,6 +31,9 @@ tweetDetailElements.forEach(container => {
   (e(TweetDetailComponent, container.dataset),
   container);
 })
+//inside e first argument is which component to render
+//second is what data to put       
+//second arg inside render is where to put 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA

@@ -19,15 +19,18 @@ export function ParentTweet(props){
     //to store the content of tweet & also modify the tweet when liked/unliked
     //console.log(actionTweet)
     //console.log(tweet)
-    const className = props.className ? props.className : 'col-10mx-auto cold-md-6'
+    const className = props.className ? props.className : 'col-10 mx-auto cold-md-6'
     const path = window.location.pathname
-    const match = path.match(/(?<tweetid>\d+)/)
-    const urlTweetId = match ? match.groups.tweetid : -1
+    const match = path.match(/(?<tweetid>\d+)/) //getting tweetId if it is detail page
+    const urlTweetId = match ? match.groups.tweetid : -1 
+    //if its detail view then match will return true, so url will then extract property
+    //-1 since we dont have any tweet with that id
     const isDetail = `${tweet.id}` === `${urlTweetId}`
+    
 
     const handleLink  = (event) => {
       event.preventDefault()
-      window.location.href = `/${tweet.id}`
+      window.location.href = `/${tweet.id}` //redirecting to tweet page
     }
   
     const handlePerformAction = (newActionTweet, status) => {

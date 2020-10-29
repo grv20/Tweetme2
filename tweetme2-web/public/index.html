@@ -44,11 +44,13 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
     <script>
+      //routing via pure js                                                          
       var path = window.location.pathname
-      var idRegex = /(?<tweetid>\d+)/ 
-      var match = path.match(idRegex)
-      
+      var idRegex = /(?<tweetid>\d+)/ // /pattern/modifiers \d to find digit + to denote atleast one digit
+      var match = path.match(idRegex) //Regex denotes regular expression
+      //console.log(match) gives id it has property of groups which we can query
       if (match){
+        //use to open detail page where only particular tweet is visible
         var tweetId = match.groups.tweetid 
         var tweetme2El = document.getElementById("tweetme-2")
         tweetme2El.className = 'd-none'
