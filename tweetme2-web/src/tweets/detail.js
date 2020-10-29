@@ -20,6 +20,15 @@ export function ParentTweet(props){
     //console.log(actionTweet)
     //console.log(tweet)
     const className = props.className ? props.className : 'col-10mx-auto cold-md-6'
+    const path = window.location.pathname
+    const match = path.match(/(?<tweetid>\d+)/)
+    const urlTweetId = match ? match.groups.tweetid : -1
+    const isDetail = `${tweet.id}` === `${urlTweetId}`
+
+    const handleLink  = (event) => {
+      event.preventDefault()
+      window.location.href = `/${tweet.id}`
+    }
   
     const handlePerformAction = (newActionTweet, status) => {
       //to perform some action when orignal tweet came to know its been retweeted, liked or unliked.
@@ -41,12 +50,15 @@ export function ParentTweet(props){
                 <p>{tweet.id} - {tweet.content}</p>
                 <ParentTweet tweet={tweet} />
                 </div>
-              {(actionTweet && hideActions !== true) && <div className='btn btn-group'>
-                <ActionBtn  tweet={actionTweet} didPerformAction={handlePerformAction} action={{type:"like", display:"Likes"}} />
-                <ActionBtn  tweet={actionTweet} didPerformAction={handlePerformAction} action={{type:"unlike", display:"UnLike"}} />
-                <ActionBtn  tweet={actionTweet} didPerformAction={handlePerformAction} action={{type:"retweet", display:"Retweet"}} />
+              <div className='btn btn-group'>
+                {(actionTweet && hideActions !== true) && <React.Fragment>
+                  <ActionBtn  tweet={actionTweet} didPerformAction={handlePerformAction} action={{type:"like", display:"Likes"}} />
+                  <ActionBtn  tweet={actionTweet} didPerformAction={handlePerformAction} action={{type:"unlike", display:"UnLike"}} />
+                  <ActionBtn  tweet={actionTweet} didPerformAction={handlePerformAction} action={{type:"retweet", display:"Retweet"}} />
+                </React.Fragment>
+                }
+                {isDetail === true ? null : <button className='btn btn-outline-primary btn-sm' onClick={handleLink}>View</button>}
               </div>
-              }
             </div>
   }
   
