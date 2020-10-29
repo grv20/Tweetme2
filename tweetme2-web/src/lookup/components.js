@@ -30,7 +30,7 @@ export function backendLookup(method, endpoint, callback, data){
   const url = `http://localhost:8000/api${endpoint}`
   xhr.responseType = "json"
   const csrftoken = getCookie('csrftoken');
-  xhr.open(method,url) //open up this method with this url
+  xhr.open(method,url) //Initializes a request.
   xhr.setRequestHeader("Content-Type", "application/json")
   
   if(csrftoken){
@@ -40,6 +40,7 @@ export function backendLookup(method, endpoint, callback, data){
   }
   
   xhr.onload = function(){
+    //onload is the function called when an XMLHttpRequest transaction completes successfully.
     callback(xhr.response,xhr.status)
   }
   xhr.onerror = function (e){
@@ -49,6 +50,6 @@ export function backendLookup(method, endpoint, callback, data){
     //A callback function is a function passed into another function as an argument,
     // which is then invoked inside the outer function to complete some kind of routine or action.
   }
-  xhr.send(jsonData) //trigger the request after i send it up
+  xhr.send(jsonData) //Sends the request
 }
 

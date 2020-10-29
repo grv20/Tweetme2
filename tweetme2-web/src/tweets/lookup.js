@@ -21,7 +21,6 @@ export function apiTweetList(username, callback){
   backendLookup("GET",endpoint, callback)
   }
 
-
 export  function apiTweetDetail(tweetId, callback){
   backendLookup("GET",`tweets/${tweetId}/`, callback)
 }

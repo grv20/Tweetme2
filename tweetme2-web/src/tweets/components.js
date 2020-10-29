@@ -8,9 +8,13 @@ export function TweetsComponent(props){
   const [newTweets, setNewTweets] = useState([])
 
   const canTweet = props.canTweet === "false" ? false : true
+
   const handleNewTweet = (newTweet) =>{
+    //called when new tweet created
+    //takes data from callback from TweetCreate
+    //sends new Tweet data to TweetsList
     let tempNewTweets = [...newTweets]
-      tempNewTweets.unshift(newTweet)
+      tempNewTweets.unshift(newTweet)//can hold multiple new tweets
       setNewTweets(tempNewTweets) 
     }
 

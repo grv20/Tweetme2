@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {ActionBtn} from './buttons'
 
 export function ParentTweet(props){
+  //to show parent tweet(when retweeted)
     const {tweet} = props
     return tweet.parent ? <div className='row'>
               <div className='col-11 mx-auto p-3 border rounded'>
@@ -13,11 +14,9 @@ export function ParentTweet(props){
   }
   
   export function Tweet(props){
-    //props are argument passed to react components
-    //props are an object, do console.log to find it out
-    //console.log(props)
     const {tweet, didRetweet, hideActions} = props
     const [actionTweet, setActionTweet] = useState(props.tweet ? props.tweet : null)
+    //to store the content of tweet & also modify the tweet when liked/unliked
     //console.log(actionTweet)
     //console.log(tweet)
     const className = props.className ? props.className : 'col-10mx-auto cold-md-6'
@@ -27,6 +26,7 @@ export function ParentTweet(props){
       if (status === 200){
         console.log(newActionTweet)
         setActionTweet(newActionTweet)
+        //we change the state of tweet, which is been liked or unliked
       } else if (status === 201){
         if (didRetweet){
           didRetweet(newActionTweet)
