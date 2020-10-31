@@ -7,7 +7,7 @@
         -> Retweeting
             -> Read Only Serializer
             -> Create only Serializer
-        -> Liking
+        -> Liking or unliking
 
 2. Users
     -> Register

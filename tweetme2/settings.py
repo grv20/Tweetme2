@@ -26,7 +26,7 @@ SECRET_KEY = 'wop))y^)eg=9ht1q5++_%3^+w)4@=c8^nh2b!5gnxd5oj#raft'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','.mydomain.com','.localhost', '.localhost:19002/']
+ALLOWED_HOSTS = ['127.0.0.1','.mydomain.com','localhost']
 LOGIN_URL = "/login"
 MAX_TWEET_LENGTH = 240
 TWEET_ACTION_OPTIONS = ["like", "unlike", "retweet"]
@@ -123,7 +123,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = False
+USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
@@ -140,27 +140,23 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static-root")
 CORS_ORIGIN_ALLOW_ALL = True #any website has access to my api
 CORS_URLS_REGEX = r'^/api/.*$' #has access to only /api/ portion of my site
 
+
 DEFAULT_RENDERER_CLASSES = [
-        'rest_framework.renderers.JSONRenderer', 
-        #previously when going to \tweets it was giving structured data, but now it is just json.
-        
-]
+        'rest_framework.renderers.JSONRenderer',
+    ]
 
 DEFAULT_AUTHENTICATION_CLASSES = [
-    'rest_framework.authentication.SessionAuthentication',
+    'rest_framework.authentication.SessionAuthentication'
 ]
-
-
 if DEBUG:
     DEFAULT_RENDERER_CLASSES += [
         'rest_framework.renderers.BrowsableAPIRenderer',
-        ]
+    ]
     # DEFAULT_AUTHENTICATION_CLASSES += [
     #     'tweetme2.rest_api.dev.DevAuthentication'
     # ]
-
-
 REST_FRAMEWORK = {
+    
     'DEFAULT_AUTHENTICATION_CLASSES': DEFAULT_AUTHENTICATION_CLASSES,
     'DEFAULT_RENDERER_CLASSES': DEFAULT_RENDERER_CLASSES
 }

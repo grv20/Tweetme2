@@ -34,17 +34,23 @@ export function backendLookup(method, endpoint, callback, data){
   xhr.setRequestHeader("Content-Type", "application/json")
   
   if(csrftoken){
-  xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest") //In order to make django return "true" when queried request.is_ajax()
+  //xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest") //In order to make django return "true" when queried request.is_ajax()
   xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
   xhr.setRequestHeader("X-CSRFToken", csrftoken) //to add csrf_token via ajax
   }
   
   xhr.onload = function(){
     //onload is the function called when an XMLHttpRequest transaction completes successfully.
+    if (xhr.status === 403 ){
+      const detail = xhr.response.detail
+      if(detail === "Authentication credentials were not provided."){
+        window.location.href = "/login?showLoginRequired=true"
+      }
+    }
     callback(xhr.response,xhr.status)
   }
   xhr.onerror = function (e){
-    console.log(e)
+    console.log("error",e)
     //we are basically calling myCallback with parameters response and status
     callback({"message": "The request was an error!"}, 400)
     //A callback function is a function passed into another function as an argument,
