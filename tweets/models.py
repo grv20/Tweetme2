@@ -16,7 +16,7 @@ class Tweet(models.Model):
     parent = models.ForeignKey("self", null=True, on_delete=models.SET_NULL)
     # by default tweet wont have parent but when I re-tweet it will have parent
     #user = models.ForeignKey(User, null=True, on_delete=models.CASCADE.SET_NULL) 
-    user = models.ForeignKey(User, on_delete=models.CASCADE) 
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="tweets") 
     #one tweet can have only obe user, while a user can have many tweets
     likes = models.ManyToManyField(User, related_name='tweet_user',blank=True, through=TweetLike)
     #due to manytomany we can have list of users instead of one in above.
