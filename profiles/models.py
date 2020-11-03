@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, m2m_changed
 # Create your models here.
 User = settings.AUTH_USER_MODEL
 
@@ -27,7 +27,15 @@ class Profile(models.Model):
             Profile.objects.get_or_create(user=instance)
 
     post_save.connect(user_did_save, sender=User)
-#first arg is reciever function name 
-#second arg is which model is it
-#so it will trigger user every single time
-#instance is model
+    #first arg is reciever function name 
+    #second arg is which model is it
+    #so it will trigger user every single time
+    #instance is model
+
+    # def followers_check(sender, **kwargs):
+    #     profile = kwargs['instance']
+    #     action = kwargs['action']
+    #     print(profile)
+    #     print(action)
+
+    # m2m_changed.connect(followers_check, sender= Profile.followers.through)

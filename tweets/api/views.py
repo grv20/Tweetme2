@@ -23,15 +23,17 @@ ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 #@authentication_classes([SessionAuthentication])
 @permission_classes([IsAuthenticated])
 def tweet_create_view(request, *args, **kwargs):
+    #print(request.data)
     serializer = TweetCreateSerializer(data = request.data)
     if serializer.is_valid(raise_exception=True): #so that it will send back what the error is on its own
         serializer.save(user=request.user)
+        print(serializer.data)
         return Response(serializer.data, status=201)
     return Response({}, status=400) #no need of JsonResponse now
 
 @api_view(['GET'])
 def tweet_list_view(request, *args, **kwargs):
-    print(request.META.get("REMOTE_ADDR"))
+    #print(request.META.get("REMOTE_ADDR"))
     qs = Tweet.objects.all()
     username = request.GET.get('username') # ?username=woltab
     #print(request.user.id)

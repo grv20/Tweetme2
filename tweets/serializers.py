@@ -19,6 +19,7 @@ class TweetActionSerializer(serializers.Serializer):
 class TweetCreateSerializer(serializers.ModelSerializer):
     #using this for tweet create view
     likes = serializers.SerializerMethodField(read_only=True)
+    
     #This is a read-only field. It gets its value by calling a method on the serializer class it is attached to.
     #It can be used to add any sort of data to the serialized representation of your object
     #since i am defining this here, i must define function like get_likes
@@ -30,6 +31,7 @@ class TweetCreateSerializer(serializers.ModelSerializer):
        #The serializer method referred to by the method_name argument should accept a single argument
        #(in addition to self), which is the object being serialized.
        # It should return whatever you want to be included in the serialized representation of the object. 
+        #obj is the model attatched to this serializer
         return obj.likes.count()
 
     def validate_content(self,value):
