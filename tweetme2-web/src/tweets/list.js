@@ -8,6 +8,7 @@ export function TweetsList(props){
 
   const [tweetsInit, setTweetsInit] = useState([])//to make account of tweets when page refreshed
   const [tweets, setTweets] = useState([])//the final set of tweets to display 
+  const [nextUrl, setNextUrl] = useState(null)
   const [tweetsDidSet, setTweetsDidSet] = useState(false)//to check if this fun is called initially
   // or when new tweet submitted
 
@@ -29,7 +30,8 @@ export function TweetsList(props){
     const handleTweetListLookup = (response, status) => {
       //console.log(response,status)
       if(status === 200){
-        setTweetsInit(response)
+        setNextUrl(response.next)
+        setTweetsInit(response.results)
         setTweetsDidSet(true)//to know this was called when loading the page
         //on setting true when new tweets added, this callback wont run!
 
@@ -59,13 +61,15 @@ export function TweetsList(props){
   }
 
 
-  return tweets.map((item,index)=>{
+  return <React.Fragment>{tweets.map((item,index)=>{
     return <Tweet
       didRetweet = {handleDidRetweet}  
       tweet={item} className='my-5 py-5 border bg-white text-dark'
       key={`${index}-item.id`} />
   }
-  )
+  )}
+  { nextUrl !== null  && <button className='btn btn-outline-primary'>Load next</button>}
+  </React.Fragment>
   //Keys help React identify which items have changed, are added, or are removed.
   // Keys should be given to the elements inside the array to give the elements a stable identity
     
