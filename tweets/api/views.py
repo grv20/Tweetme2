@@ -10,6 +10,7 @@ from ..serializers import TweetSerializer, TweetCreateSerializer, TweetActionSer
 
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -30,6 +31,13 @@ def tweet_create_view(request, *args, **kwargs):
         return Response(serializer.data, status=201)
     return Response({}, status=400) #no need of JsonResponse now
 
+def get_paginated_queryset_response(qs,request):
+    paginator = PageNumberPagination()
+    paginator.page_size = 20
+    paginated_qs = paginator.paginate_queryset(qs,request)
+    serializer = TweetSerializer(paginated_qs, many=True)
+    return paginator.get_paginated_response(serializer.data)
+
 #Q allows us to lookup multiple filters at same time
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -37,8 +45,8 @@ def tweet_feed_view(request, *args, **kwargs):
     #print(request.META.get("REMOTE_ADDR"))
     user = request.user
     qs = Tweet.objects.feed(user)
-    serializer = TweetSerializer(qs, many=True)
-    return Response(serializer.data, status=200)
+    return get_paginated_queryset_response(qs, request)
+    #Response(serializer.data, status=200)
 
 @api_view(['GET'])
 def tweet_list_view(request, *args, **kwargs):
@@ -50,8 +58,7 @@ def tweet_list_view(request, *args, **kwargs):
         qs = qs.by_username(username)
         #qs = qs.filter(user__username__iexact=username)
         #qs = qs.filter(user=request.user.id)
-    serializer = TweetSerializer(qs, many=True)
-    return Response(serializer.data, status=200)
+    return get_paginated_queryset_response(qs, request)
 
 @api_view(['GET'])
 def tweet_detail_view(request, tweet_id, *args, **kwargs):
