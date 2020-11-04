@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 from django.conf import settings
 # Create your models here.
 
@@ -9,7 +10,33 @@ class TweetLike(models.Model):
     tweet = models.ForeignKey("Tweet", on_delete=models.CASCADE) 
     #"Tweet" is used bcoz tweet model is below this model
     timestamp = models.DateTimeField(auto_now_add=True)
+
+class TweetQuerySet(models.QuerySet):
+    #can use functions defined here in place of something like .filter()
+    def by_username(self,username):
+        return self.filter(user__username__iexact=username)
+
+    def feed(self,user):
+        profiles_exist = user.following.exists()
+        followed_users_id = []
+        if profiles_exist:
+            followed_users_id = user.following.values_list("user__id", flat=True) 
+            #this is much more efficient query
+            #[x.user.id for x in profiles]
+        return self.filter(
+            Q(user__id__in=followed_users_id) |
+            Q(user=user)
+        ).distinct().order_by("-timestamp")
+           
+
+class TweetManager(models.Manager):
     
+    def get_queryset(self, *args, **kwargs):
+        return TweetQuerySet(self.model, using=self._db)
+    
+    #can use functions defined below in this class in place of .objects as in{Tweet.objects}
+    def feed(self, user):
+        return self.get_queryset().feed(user)
     
 class Tweet(models.Model):
     # id = models.AutoField(primary_key=True)
@@ -23,6 +50,8 @@ class Tweet(models.Model):
     content = models.TextField(blank=True, null=True)
     image = models.FileField(upload_to='images/', blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
+    
+    objects = TweetManager()
 
     class Meta:
         ordering = ['-id']

@@ -4,7 +4,6 @@ from django.http import HttpResponse, Http404, JsonResponse
 from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.utils.http import  is_safe_url
 
-
 from ..forms import TweetForm
 from ..models import Tweet
 from ..serializers import TweetSerializer, TweetCreateSerializer, TweetActionSerializer
@@ -31,18 +30,13 @@ def tweet_create_view(request, *args, **kwargs):
         return Response(serializer.data, status=201)
     return Response({}, status=400) #no need of JsonResponse now
 
-
+#Q allows us to lookup multiple filters at same time
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def tweet_feed_view(request, *args, **kwargs):
     #print(request.META.get("REMOTE_ADDR"))
     user = request.user
-    profiles = user.following.all()
-    followed_users_id = []
-    if profiles.exists():
-        followed_users_id = [x.user.id for x in profiles]
-    followed_users_id.append(user.id)
-    qs = Tweet.objects.filter(user__id__in=followed_users_id).order_by("-timestamp")
+    qs = Tweet.objects.feed(user)
     serializer = TweetSerializer(qs, many=True)
     return Response(serializer.data, status=200)
 
@@ -53,7 +47,8 @@ def tweet_list_view(request, *args, **kwargs):
     username = request.GET.get('username') # ?username=woltab
     #print(request.user.id)
     if username != None:
-        qs = qs.filter(user__username__iexact=username)
+        qs = qs.by_username(username)
+        #qs = qs.filter(user__username__iexact=username)
         #qs = qs.filter(user=request.user.id)
     serializer = TweetSerializer(qs, many=True)
     return Response(serializer.data, status=200)
