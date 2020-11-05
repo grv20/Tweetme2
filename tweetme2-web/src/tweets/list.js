@@ -60,6 +60,23 @@ export function TweetsList(props){
 
   }
 
+  const handleLoadNext = (event) => {
+    event.preventDefault()
+    if (nextUrl != null){
+      const handleLoadNextResponse = (response, status) =>{
+        if(status === 200){
+          setNextUrl(response.next)
+          const newTweets = [...tweets].concat(response.results)
+          setTweetsInit(newTweets)
+          setTweets(newTweets)
+        }
+        else{
+          alert("There was an error")
+        }
+      }
+      apiTweetList(props.username, handleLoadNextResponse, nextUrl)
+    }
+  }
 
   return <React.Fragment>{tweets.map((item,index)=>{
     return <Tweet
@@ -68,7 +85,7 @@ export function TweetsList(props){
       key={`${index}-item.id`} />
   }
   )}
-  { nextUrl !== null  && <button className='btn btn-outline-primary'>Load next</button>}
+  {nextUrl !== null  && <button onClick={handleLoadNext} className='btn btn-outline-primary'>Load next</button>}
   </React.Fragment>
   //Keys help React identify which items have changed, are added, or are removed.
   // Keys should be given to the elements inside the array to give the elements a stable identity
