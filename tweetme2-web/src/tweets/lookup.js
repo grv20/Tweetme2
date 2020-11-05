@@ -12,6 +12,15 @@ export function apiTweetAction(tweetId, action, callback){
   backendLookup("POST", "/tweets/action/", callback, data)
 }
 
+export function apiTweetFeed(callback, nextUrl){
+  //handles tweet-load request from front end and format it to send it to backend
+  let endpoint = "/tweets/feed/"
+  if(nextUrl !== null && nextUrl !== undefined){
+    endpoint = nextUrl.replace("http://localhost:8000/api", "")
+  }
+  backendLookup("GET",endpoint, callback)
+  }
+
 export function apiTweetList(username, callback, nextUrl){
   //handles tweet-load request from front end and format it to send it to backend
   let endpoint = "/tweets/"
