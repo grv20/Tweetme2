@@ -48,7 +48,7 @@ export function ParentTweet(props){
   
     return  <div className={className}>
               {isRetweet === true && <div className='mb-2'>
-                <span className='small text-muted'>Retweet via <UserDisplay user={retweeter} /></span>
+                <span className='small text-muted'> <i class='fa fa-retweet' aria-hidden='true' /> Retweet via <UserDisplay user={retweeter} /></span>
                 </div>}
               <div className='d-flex'>
               
@@ -74,7 +74,7 @@ export function ParentTweet(props){
                       <ActionBtn  tweet={actionTweet} didPerformAction={handlePerformAction} action={{type:"retweet", display:"Retweet"}} />
                     </React.Fragment>
                     }
-                    {isDetail === true ? null : <button className='btn btn-outline-primary btn-sm' onClick={handleLink}>View</button>}
+                    {isDetail === true ? null : <button className='btn btn-outline-dark btn-sm' onClick={handleLink}>View <i class="fa fa-eye" aria-hidden="true"></i></button>}
                   </div>
                 </div>
               </div>

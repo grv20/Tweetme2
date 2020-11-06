@@ -4,7 +4,16 @@ import {apiTweetAction} from './lookup';
 export function ActionBtn(props) {
     const {tweet,action, didPerformAction} = props
     const likes = tweet.likes ? tweet.likes : 0
-    const className = props.className ? props.className : 'btn btn-primary btn-sm'
+    let iconClass = 'fa fa-retweet'
+    let className = props.className ? props.className : 'btn btn-outline-primary btn-sm'
+    if (action.type == "like") {
+      className = 'btn btn-outline-success'
+      iconClass = 'fa fa-thumbs-up'
+  }
+    else if(action.type == "unlike") {
+      className = 'btn btn-outline-danger'
+      iconClass = 'fa fa-thumbs-down'
+    }
     const actionDisplay = action.display ? action.display : 'Action'
     
     const handleActionBackendEvent = (response, status) => {
@@ -24,6 +33,6 @@ export function ActionBtn(props) {
       
     }
     const display = action.type === 'like' ? `${likes} ${actionDisplay}` : `${actionDisplay}` 
-    return <button className={className} onClick={handleClick}> {display} </button>
+    return <button className={className} onClick={handleClick}>{display} <i class={iconClass} aria-hidden="true"></i> </button>
   }
   
