@@ -6,11 +6,11 @@ export function ActionBtn(props) {
     const likes = tweet.likes ? tweet.likes : 0
     let iconClass = 'fa fa-retweet'
     let className = props.className ? props.className : 'btn btn-outline-primary btn-sm'
-    if (action.type == "like") {
+    if (action.type === "like") {
       className = 'btn btn-outline-success'
       iconClass = 'fa fa-thumbs-up'
   }
-    else if(action.type == "unlike") {
+    else if(action.type === "unlike") {
       className = 'btn btn-outline-danger'
       iconClass = 'fa fa-thumbs-down'
     }
