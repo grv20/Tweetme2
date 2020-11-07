@@ -33,6 +33,6 @@ export function ActionBtn(props) {
       
     }
     const display = action.type === 'like' ? `${likes} ${actionDisplay}` : `${actionDisplay}` 
-    return <button className={className} onClick={handleClick}>{display} <i class={iconClass} aria-hidden="true"></i> </button>
+    return <button className={className} onClick={handleClick}>{display} <i className={iconClass} aria-hidden="true"></i> </button>
   }
   

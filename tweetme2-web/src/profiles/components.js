@@ -25,7 +25,7 @@ export function UserDisplay(props){
 
 export function UserPicture(props){
   const {user} = props
-  return  <UserLink username={user.username}><span className='mx-1 px-3 py-2 rounded-circle bg-dark text-white'>
+  return  <UserLink username={user.username}><span className='mx-1 px-2 py-2 rounded-circle bg-dark text-white'>
           {user.username[0]}
         </span></UserLink>
 }

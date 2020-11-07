@@ -16,7 +16,7 @@ export function ParentTweet(props){
     //to store the content of tweet & also modify the tweet when liked/unliked
     //console.log(actionTweet)
     //console.log(tweet)
-    let className = props.className ? props.className : 'col-10 mx-auto cold-md-6'
+    let className = props.className ? props.className : 'col-10 mx-auto col-md-6'
     className = isRetweet === true ? `${className} p-2 border rounded ` : className
     const path = window.location.pathname
     const match = path.match(/(?<tweetid>\d+)/) //getting tweetId if it is detail page
@@ -48,7 +48,7 @@ export function ParentTweet(props){
   
     return  <div className={className}>
               {isRetweet === true && <div className='mb-2'>
-                <span className='small text-muted'> <i class='fa fa-retweet' aria-hidden='true' /> Retweet via <UserDisplay user={retweeter} /></span>
+                <span className='small text-muted'> <i className='fa fa-retweet' aria-hidden='true' /> Retweet via <UserDisplay user={retweeter} /></span>
                 </div>}
               <div className='d-flex'>
               
@@ -56,15 +56,15 @@ export function ParentTweet(props){
                   <UserPicture user={tweet.user} />
                 </div>
                   <div className='col-11'>
-                    <div>
                     
-                  <p>
-                    <UserDisplay includeFullName user={tweet.user} />
-                  </p>
+                    <div>
+                      <p>
+                        <UserDisplay includeFullName user={tweet.user} />
+                      </p>
 
-                  <p>{tweet.content}</p>
-                  
-                  <ParentTweet tweet={tweet} retweeter={tweet.user} />
+                      <p>{tweet.content}</p>
+                      
+                      <ParentTweet tweet={tweet} retweeter={tweet.user} />
                   </div>
 
                   <div className='btn btn-group px-0'>
@@ -74,7 +74,7 @@ export function ParentTweet(props){
                       <ActionBtn  tweet={actionTweet} didPerformAction={handlePerformAction} action={{type:"retweet", display:"Retweet"}} />
                     </React.Fragment>
                     }
-                    {isDetail === true ? null : <button className='btn btn-outline-dark btn-sm' onClick={handleLink}>View <i class="fa fa-eye" aria-hidden="true"></i></button>}
+                    {isDetail === true ? null : <button className='btn btn-outline-dark btn-sm' onClick={handleLink}>View <i className="fa fa-eye" aria-hidden="true"></i></button>}
                   </div>
                 </div>
               </div>
