@@ -9,6 +9,8 @@ function ProfileBadge(props){
     const handleFollowToggle = (event) => {
         event.preventDefault()
         if (didFollowToggle && !profileLoading){
+            //if profile loading set to false, can toggle the action.
+            //profile loading set to true when sending one request, so that you cant toggle it.
             didFollowToggle(currentVerb)
         }
     }
@@ -34,7 +36,9 @@ export function ProfileBadgeComponent(props){
     useEffect(() =>{
         if (didLookup === false){
             apiProfileDetail(username, handleBackendLookup)
+            //to fetch profile data initially
             setDidLookup(true)
+            //so as to know initial data fetched
         }
     },[username, didLookup, setDidLookup])
 
@@ -43,10 +47,13 @@ export function ProfileBadgeComponent(props){
             console.log(response,status)
             if(status === 200){
                 setProfile(response)
+                //that is request was valid, action was completed and profile updated
             }
             setProfileLoading(false)
+            //profileloading set to false, so that we can toggle again
         })
         setProfileLoading(true)
+        //profile loading set to true when sending one request.
     }
 
     return didLookup === false ? "Loading..." : profile ? <ProfileBadge user={profile} didFollowToggle={handleNewFollow} profileLoading={profileLoading} /> : null
