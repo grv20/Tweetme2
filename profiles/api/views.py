@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.utils.http import  is_safe_url
 
 from ..models import Profile
+from ..serializers import PublicProfileSerializer
 
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
@@ -17,12 +18,15 @@ ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 # Create your views here.
 
 
-# @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
-# def user_profile_detail_view(request, username, *args, **kwargs):
-#     current_user =  request.user_follow_view
-#     to_follow_user = 
-#     return Response({}, status=400) #no need of JsonResponse now
+@api_view(['GET'])
+def profile_detail_api_view(request, username, *args, **kwargs):
+    #get the profile for the passed username
+    qs = Profile.objects.filter(user__username=username)
+    if not qs.exists():
+        raise Response({"detail":"Use not found"}, status=404)
+    profile_obj = qs.first()
+    data = PublicProfileSerializer(instance=profile_obj)
+    return Response(data.data, status=200) 
 
 @api_view(['GET','POST'])
 @permission_classes([IsAuthenticated])
