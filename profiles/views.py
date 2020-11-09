@@ -17,7 +17,7 @@ def profile_update_view(request, *args, **kwargs):
     my_profile = user.profile #we can access profile here bcoz we used one_to_one
     form = ProfileForm(request.POST or None, instance=my_profile, initial=user_data)
     if form.is_valid():
-        profole_obj = form.save(commit=False)
+        profile_obj = form.save(commit=False)
         first_name = form.cleaned_data.get('first_name')
         last_name = form.cleaned_data.get('last_name')
         email = form.cleaned_data.get('email')
