@@ -21,7 +21,7 @@ export function FeedComponent(props){
     }
 
   return <div className={props.className}>
-          {canTweet === true && <TweetCreate didTweet={handleNewTweet} className='col-12mb-3' />}
+          {canTweet === true && <TweetCreate didTweet={handleNewTweet} className='col-12 mb-3' />}
           <FeedList newTweets={newTweets} {...props} />
     </div>
 }
